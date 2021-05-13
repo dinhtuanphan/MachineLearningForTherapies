@@ -5,7 +5,7 @@ library(cowplot)
 
 # Function to read all the data in excel sheets
 readExcel <- function(filename, tibble = FALSE){
-  sheets <- readxl::excel_sheets(filename)
+  sheets <<- readxl::excel_sheets(filename)
   x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
   lapply(x, function(x) x[, colSums(is.na(x)) == 0])
   if(!tibble) x <- lapply(x, as.data.frame)
@@ -20,13 +20,19 @@ modulator <- readExcel("20210513_updated_healthy_iontophoresis.xlsx")
 
 # Plotting function
 myplot <- function(i){
-  ggplot(modulator[[i]], aes(x=SR, y = C_predose_smooth_2min) ) + 
-    geom_point(size=2, shape=19)
+  p <- ggplot(modulator[[i]], aes(x=SR, y = C_predose_smooth_2min) ) + 
+    geom_point(size=2, shape=19) +
+    xlim(0, 1.2) +
+    ylim(0, 30)
+  p + labs (x = "Sweat rate", y = "C (mM)")
 }
 
 # Create list of plots
-plist <- lapply(1:12, myplot)
+plist <- lapply(1:4, myplot)
 
 # Plot all together with cowplot
-cowplot::plot_grid(plotlist = plist, align = "hv")
+cowplot::plot_grid(plotlist = plist, align = "hv",labels = sheets[1:4]
+                   , label_size = 10
+                   , label_x = 0.4, label_y = 0.95
+                  )
 
