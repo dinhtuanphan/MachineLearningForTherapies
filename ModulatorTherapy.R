@@ -21,17 +21,18 @@ modulator <- readExcel("20210513_updated_healthy_iontophoresis.xlsx")
 # Plotting function
 myplot <- function(i){
   p <- ggplot(modulator[[i]], aes(x=SR, y = C_predose_smooth_2min) ) + 
-    geom_point(size=2, shape=19) +
-    xlim(0, 1.2) +
-    ylim(0, 30)
-  p + labs (x = "Sweat rate", y = "C (mM)")
+    geom_point() +
+    geom_smooth(method = lm) +
+    xlim(0, 0.8) +
+    ylim(0, 60)
+  p + labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
 }
 
 # Create list of plots
-plist <- lapply(1:4, myplot)
+plist <- lapply(1:25, myplot)
 
 # Plot all together with cowplot
-cowplot::plot_grid(plotlist = plist, align = "hv",labels = sheets[1:4]
+cowplot::plot_grid(plotlist = plist, align = "hv",labels = sheets[1:25]
                    , label_size = 10
                    , label_x = 0.4, label_y = 0.95
                   )
