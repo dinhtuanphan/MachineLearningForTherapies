@@ -14,7 +14,7 @@ readExcel <- function(filename, tibble = FALSE){
 }
 
 # Read data in all sheets
-modulator <- readExcel("20210514_updated_healthy_iontophoresis.xlsx")
+cf <- readExcel("20210514_updated_CF_subjects_iontophoresis.xlsx")
 
 # Basic exploratory data analysis (EDA) and visualization
 
