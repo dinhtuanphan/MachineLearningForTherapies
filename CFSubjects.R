@@ -33,29 +33,28 @@ myplot <- function(i) {
         geom_point() +
         geom_smooth() +
         xlim(0, 40) +
-        ylim(0, 120)
-      # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
-      p + labs (x = "Time (min)", y = "C (mM)")
+        ylim(0, 120) +
+        # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
+        xlab("Time (min)") +
+        ylab("C (mM)")
+      p + ggtitle(sheets[i]) + theme(plot.title = element_text(hjust = 0.5))
     },
     error = function(e) {
       message('Caught an error!')
       print(e)
-      return(NA)
+      return(NULL)
     },
     warning = function(w) {
       message('Caught an warning!')
       print(w)
-      return(NA)
-    },
-    finally = {
-      message('All done, quitting.')
+      return(NULL)
     }
   )
 }
 
-
 # Create list of plots
-plist <- lapply(1:10, myplot)
+plist <- lapply(1:length(cf), myplot)
+
 
 # Plot all together with cowplot
 cowplot::plot_grid(
