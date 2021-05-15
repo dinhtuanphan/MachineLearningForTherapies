@@ -1,4 +1,5 @@
 library(readxl)
+library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(cowplot)
@@ -10,7 +11,7 @@ readExcel <- function(filename, tibble = FALSE) {
     lapply(sheets, function(X)
       readxl::read_excel(filename, sheet = X))
   lapply(x, function(x)
-    x[, colSums(is.na(x)) == 0])
+    x[, colSums(is.na(x)) == 0] )
   if (!tibble)
     x <- lapply(x, as.data.frame)
   names(x) <- sheets
@@ -19,7 +20,7 @@ readExcel <- function(filename, tibble = FALSE) {
 
 # Read data in all sheets
 cf <- readExcel("20210514_updated_CF_subjects_iontophoresis.xlsx")
-
+cf <- cf[-c(3,40)]
 # Basic exploratory data analysis (EDA) and visualization
 
 # Plotting function
@@ -31,7 +32,7 @@ myplot <- function(i) {
         ggplot(cf[[i]],
                aes(x = `Time (min)...8`, y = `5-minute moving avg (mM)...11`)) +
         geom_point() +
-        geom_smooth() +
+        geom_smooth(method = "loess", formula = "y~x", se = TRUE) +
         xlim(0, 40) +
         ylim(0, 120) +
         # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
@@ -45,7 +46,7 @@ myplot <- function(i) {
       return(NULL)
     },
     warning = function(w) {
-      message('Caught an warning!')
+      message('Caught a warning!')
       print(w)
       return(NULL)
     }
@@ -59,9 +60,5 @@ plist <- lapply(1:length(cf), myplot)
 # Plot all together with cowplot
 cowplot::plot_grid(
   plotlist = plist,
-  align = "hv",
-  labels = sheets[1:length(cf)],
-  label_size = 10,
-  label_x = 0.4,
-  label_y = 0.95
+  align = "hv"
 )
