@@ -19,6 +19,7 @@ readExcel <- function(filename, tibble = FALSE) {
 # Read data in all sheets
 cf <- readExcel("20210514_updated_CF_subjects_iontophoresis.xlsx")
 cf <- cf[-c(3, 40)]
+
 # Basic exploratory data analysis (EDA) and visualization
 
 # Plotting function
@@ -61,7 +62,7 @@ plist <- lapply(1:length(cf), myplot)
 
 # Open an image file
 png(
-  file = "saving_plot5.png",
+  file = "saving_plot.png",
   width = 17,
   height = 11,
   units = 'in',
@@ -74,3 +75,12 @@ cowplot::plot_grid(plotlist = plist,
 
 # Close the image file
 dev.off()
+
+# Subsetting data into two group
+# homogeneous F508del/F508del
+homo <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/F508del'))
+
+# heterogeneous F508del/G551D
+hete <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/G551D'))
+names(homo)
+names(hete)

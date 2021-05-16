@@ -4,8 +4,26 @@ author: "Dinh Tuan Phan, Ph.D."
 date: "5/16/2021"
 output:
   pdf_document: default
-  html_document: default
+  html_document:
+    df_print: paged
+header-includes: \usepackage{graphicx} \usepackage{fancyhdr} \pagestyle{fancy} \setlength\headheight{28pt}
+  \fancyhead[R]{\includegraphics[width=3cm]{logo.jpg}} \fancyfoot[LE,RO]{Johns Hopkins
+  Institute for NanoBioTechnology}
 ---
+
+```{r, echo=FALSE}
+htmltools::img(
+  src = "logo.jpg",
+  alt = 'logo',
+  style = 'position:absolute; top:0; right:0; padding:10px;'
+)
+```
+
+
+<br>
+
+---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -114,10 +132,13 @@ Plot all together with cowplot
 cowplot::plot_grid(plotlist = plist,
                    align = "hv")
 
-# Close the image file
-# dev.off()
 ```
 
+
+```{r eval=FALSE}
+# Close the image file
+dev.off()
+```
 
 
 ### Subsetting data into two groups for further analysis
