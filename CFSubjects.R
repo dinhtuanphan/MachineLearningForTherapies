@@ -10,8 +10,8 @@ readExcel <- function(filename, tibble = FALSE) {
   x <-
     lapply(sheets, function(X)
       readxl::read_excel(filename, sheet = X))
-  lapply(x, function(x)
-    x[, colSums(is.na(x)) == 0] )
+  x <- lapply(x, function(x)
+    x[, !apply(is.na(x), 2, all)])
   if (!tibble)
     x <- lapply(x, as.data.frame)
   names(x) <- sheets
@@ -20,7 +20,7 @@ readExcel <- function(filename, tibble = FALSE) {
 
 # Read data in all sheets
 cf <- readExcel("20210514_updated_CF_subjects_iontophoresis.xlsx")
-cf <- cf[-c(3,40)]
+cf <- cf[-c(3, 40)]
 # Basic exploratory data analysis (EDA) and visualization
 
 # Plotting function
@@ -32,7 +32,9 @@ myplot <- function(i) {
         ggplot(cf[[i]],
                aes(x = `Time (min)...8`, y = `5-minute moving avg (mM)...11`)) +
         geom_point() +
-        geom_smooth(method = "loess", formula = "y~x", se = TRUE) +
+        geom_smooth(method = "loess",
+                    formula = "y~x",
+                    se = TRUE) +
         xlim(0, 40) +
         ylim(0, 120) +
         # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
@@ -57,8 +59,11 @@ myplot <- function(i) {
 plist <- lapply(1:length(cf), myplot)
 
 
+# Open a pdf file
+png(file = "saving_plot4.png", width = 11, height = 8.5, units='in', res = 600)
+
 # Plot all together with cowplot
-cowplot::plot_grid(
-  plotlist = plist,
-  align = "hv"
-)
+cowplot::plot_grid(plotlist = plist,
+                   align = "hv")
+# Close the pdf file
+dev.off()
