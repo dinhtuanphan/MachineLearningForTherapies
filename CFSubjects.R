@@ -11,7 +11,7 @@ readExcel <- function(filename, tibble = FALSE) {
     lapply(sheets, function(X)
       readxl::read_excel(filename, sheet = X))
   x <- lapply(x, function(x)
-    x[, !apply(is.na(x), 2, all)])
+    x[,!apply(is.na(x), 2, all)])
   if (!tibble)
     x <- lapply(x, as.data.frame)
   names(x) <- sheets
@@ -30,15 +30,17 @@ myplot <- function(i) {
     expr = {
       p <-
         ggplot(cf[[i]],
-               aes(x = `Time (min)...8`, y = `5-minute moving avg (mM)...11`)) +
+               aes(x = `SR...14`, y = `C_predose_smooth_2min`)) +
         geom_point() +
         geom_smooth(method = "loess",
                     formula = "y~x",
                     se = TRUE) +
-        xlim(0, 40) +
+        xlim(0, 1) +
         ylim(0, 120) +
         # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
-        xlab("Time (min)") +
+        # xlab("Time (min)") +
+        # ylab("C (mM)")
+        xlab(expression(Sweat ~ rate ~ (mu * "L" ~ min ^ -1 ~ cm ^ -2))) +
         ylab("C (mM)")
       p + ggtitle(sheets[i]) + theme(plot.title = element_text(hjust = 0.5))
     },
@@ -60,7 +62,13 @@ plist <- lapply(1:length(cf), myplot)
 
 
 # Open a pdf file
-png(file = "saving_plot4.png", width = 11, height = 8.5, units='in', res = 600)
+png(
+  file = "saving_plot5.png",
+  width = 17,
+  height = 11,
+  units = 'in',
+  res = 600
+)
 
 # Plot all together with cowplot
 cowplot::plot_grid(plotlist = plist,
