@@ -1,7 +1,5 @@
 library(readxl)
 library(tidyverse)
-library(dplyr)
-library(ggplot2)
 library(cowplot)
 
 # Function to read all the data in excel sheets
@@ -30,9 +28,9 @@ myplot <- function(i) {
     expr = {
       p <-
         ggplot(cf[[i]],
-               aes(x = `SR...14`, y = `C_predose_smooth_2min`)) +
+               aes(x = `SR...28`, y = `C_postdose_smooth_2min`)) +
         geom_point() +
-        geom_smooth(method = "loess",
+        geom_smooth(method = "lm",
                     formula = "y~x",
                     se = TRUE) +
         xlim(0, 1) +
@@ -61,7 +59,7 @@ myplot <- function(i) {
 plist <- lapply(1:length(cf), myplot)
 
 
-# Open a pdf file
+# Open an image file
 png(
   file = "saving_plot5.png",
   width = 17,
@@ -73,5 +71,6 @@ png(
 # Plot all together with cowplot
 cowplot::plot_grid(plotlist = plist,
                    align = "hv")
-# Close the pdf file
+
+# Close the image file
 dev.off()
