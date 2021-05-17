@@ -17,8 +17,17 @@ readExcel <- function(filename, tibble = FALSE) {
 }
 
 # Read data in all sheets
-cf <- readExcel("20210514_updated_CF_subjects_iontophoresis.xlsx")
-cf <- cf[-c(3, 40)]
+cf <- readExcel("20210517_updated_CF_subjects_iontophoresis.xlsx")
+cf <- cf[-c(46, 47, 48)]
+
+# Subsetting data into two groups
+# homogeneous F508del/F508del
+homo <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/F508del'))
+
+# heterogeneous F508del/G551D
+hete <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/G551D'))
+names(homo)
+names(hete)
 
 # Basic exploratory data analysis (EDA) and visualization
 
@@ -29,17 +38,17 @@ myplot <- function(i) {
     expr = {
       p <-
         ggplot(cf[[i]],
-               aes(x = `SR...28`, y = `C_postdose_smooth_2min`)) +
+               aes(x = `Time (min)...22`, y = `5-minute moving avg (mM)...25`)) +
         geom_point() +
-        geom_smooth(method = "lm",
+        geom_smooth(method = "loess",
                     formula = "y~x",
                     se = TRUE) +
-        xlim(0, 1) +
+        xlim(0, 40) +
         ylim(0, 120) +
         # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
-        # xlab("Time (min)") +
+        xlab("Time (min)") +
         # ylab("C (mM)")
-        xlab(expression(Sweat ~ rate ~ (mu * "L" ~ min ^ -1 ~ cm ^ -2))) +
+        # xlab(expression(Sweat ~ rate ~ (mu * "L" ~ min ^ -1 ~ cm ^ -2))) +
         ylab("C (mM)")
       p + ggtitle(sheets[i]) + theme(plot.title = element_text(hjust = 0.5))
     },
@@ -76,11 +85,4 @@ cowplot::plot_grid(plotlist = plist,
 # Close the image file
 dev.off()
 
-# Subsetting data into two group
-# homogeneous F508del/F508del
-homo <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/F508del'))
 
-# heterogeneous F508del/G551D
-hete <- subset(cf, sapply(cf, function(x) x$Genotype[1] =='F508del/G551D'))
-names(homo)
-names(hete)
