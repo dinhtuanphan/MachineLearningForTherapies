@@ -38,17 +38,17 @@ myplot <- function(i) {
     expr = {
       p <-
         ggplot(cf[[i]],
-               aes(x = `Time (min)...22`, y = `5-minute moving avg (mM)...25`)) +
+               aes(x = `SR...28`, y = `C_postdose_smooth_2min`)) +
         geom_point() +
-        geom_smooth(method = "loess",
+        geom_smooth(method = "lm",
                     formula = "y~x",
                     se = TRUE) +
-        xlim(0, 40) +
+        xlim(0, 1) +
         ylim(0, 120) +
         # labs (x = expression(Sweat~rate~(mu*"L"~min^-1~cm^-2)), y = "C (mM)")
-        xlab("Time (min)") +
+        # xlab("Time (min)") +
         # ylab("C (mM)")
-        # xlab(expression(Sweat ~ rate ~ (mu * "L" ~ min ^ -1 ~ cm ^ -2))) +
+        xlab(expression(Sweat ~ rate ~ (mu * "L" ~ min ^ -1 ~ cm ^ -2))) +
         ylab("C (mM)")
       p + ggtitle(sheets[i]) + theme(plot.title = element_text(hjust = 0.5))
     },
