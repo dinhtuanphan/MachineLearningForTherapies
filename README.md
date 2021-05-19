@@ -11,5 +11,6 @@ The tasks in this project include the entire data science pipeline:
 
 ## Progress
 - On-going project with two Johns Hopkins undergrads and one Ph.D. student
-- The current step is performing data exploratory and visualization.
-- The progress will be updated weekly.
+- The current step is performing data exploratory and visualization
+- Tools used: mostly in R (e.g., tidyverse, ggplot2), MATLAB
+- The progress will be updated weekly
