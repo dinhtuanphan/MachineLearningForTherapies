@@ -17,7 +17,7 @@ readExcel <- function(filename, tibble = FALSE) {
 }
 
 # Read data in all sheets
-cf <- readExcel("20210517_updated_CF_subjects_iontophoresis.xlsx")
+cf <- readExcel("20210518_updated_CF_subjects_iontophoresis.xlsx")
 cf <- cf[-c(46, 47, 48)]
 
 # Subsetting data into two groups
