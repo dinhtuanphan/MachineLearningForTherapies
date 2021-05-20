@@ -1,4 +1,4 @@
-# Machine Learning for Treatment Therapies
+# Machine Learning Models for Treatment Therapies
 
 ## Project Objective
 The final goal of this project is to develop a comprehensive prediction model for Cystic Fibrosis modulators and provide clinical insight into the current therapies. In terms of the data science perspective, the project covers the entire data science pipeline/workflow. The main tasks include the following steps: 
