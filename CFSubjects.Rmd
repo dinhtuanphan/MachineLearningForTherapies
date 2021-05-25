@@ -155,3 +155,13 @@ names(hete)
 ```
 
 
+### Read data from SQL
+
+```{sql, connection = con, output = "patients"}
+SELECT "patientID", "age", "treatmentTime", SUM(CASE WHEN ("drug" = 'yes') THEN (1.0) ELSE (0.0) END) AS "subscribe",
+COUNT(*) AS "total"
+FROM ("masterData") 
+GROUP BY "patientID", "age", "treatmentTime"
+
+```
+
